@@ -1,0 +1,7 @@
+*.sou
+*.user
+bin/
+obj/
+localsettings.xml
+*.swp
+*~
