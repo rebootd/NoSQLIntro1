@@ -8,7 +8,7 @@ using NHibernate;
 namespace BlogSQL.Controllers
 {
     [HandleError]
-    public class ApplicationController : Controller
+    public class BaseController : Controller
     {
         protected ISession DataSession
         {

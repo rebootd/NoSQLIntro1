@@ -8,7 +8,7 @@ using BlogSQL.Models;
 namespace BlogSQL.Controllers
 {
     [HandleError]
-    public class HomeController : ApplicationController
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
