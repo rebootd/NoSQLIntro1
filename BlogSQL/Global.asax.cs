@@ -10,6 +10,10 @@ using FluentMigrator.Runner.Processors;
 using FluentMigrator.Runner.Generators;
 using FluentMigrator.Runner.Announcers;
 using FluentMigrator;
+using NHibernate;
+using FluentNHibernate;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 
 namespace BlogSQL
 {
@@ -43,6 +47,36 @@ namespace BlogSQL
             EnsureMigration();
         }
 
+        public const string SESSION_KEY = "sessionscope";
+        public void Application_BeginRequest()
+        {
+            if (HttpContext.Current.Items.Contains(SESSION_KEY) && HttpContext.Current.Items[SESSION_KEY] != null)
+                return;
+            ISession session = CreateSessionFactory().OpenSession();
+            HttpContext.Current.Items.Add(SESSION_KEY, session);
+        }
+
+        public void Application_EndRequest()
+        {
+            try
+            {
+                if (!HttpContext.Current.Items.Contains(SESSION_KEY) || HttpContext.Current.Items[SESSION_KEY] == null)
+                    return;
+
+                ISession session = (ISession)HttpContext.Current.Items[SESSION_KEY];
+                if (session != null)
+                {
+                    session.Flush();
+                    session.Dispose();
+                }
+                session = null;
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Current.Trace.Warn("Error", "EndRequest: " + ex.Message, ex);
+            }
+        }
+
         private void EnsureMigration()
         {
             string connectionString = System.Configuration.ConfigurationManager.AppSettings["connectionString"];
@@ -59,6 +93,25 @@ namespace BlogSQL
 
             versionRunner = null;
             connection = null;
+        }
+
+        private static ISessionFactory CreateSessionFactory()
+        {
+            string connectionString = System.Configuration.ConfigurationManager.AppSettings["connectionString"];
+            return Fluently.Configure()
+                .Database(
+                    FluentNHibernate.Cfg.Db.MsSqlConfiguration.MsSql2008.ConnectionString(c => c.Is(connectionString))
+                )
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<BlogSQL.Models.Post>())
+                .BuildSessionFactory();
+
+            //return Fluently.Configure()
+            //  .Database(
+            //    FluentNHibernate.Cfg.Db.MsSqlConfiguration.MsSql2008.ConnectionString(connectionString)
+            //  )
+            //  .Mappings(m =>
+            //    m.FluentMappings.AddFromAssemblyOf<BlogSQL.Models.Post>())
+            //  .BuildSessionFactory();
         }
     }
 }

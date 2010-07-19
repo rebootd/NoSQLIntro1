@@ -8,6 +8,7 @@ namespace BlogSQL.Models.Mapping
     {
         public PostMap()
         {
+            Table("Posts");
             Id(x => x.Id).GeneratedBy.Guid();
             Map(x => x.Hash);
             Map(x => x.Title);
