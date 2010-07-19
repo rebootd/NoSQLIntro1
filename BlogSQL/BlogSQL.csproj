@@ -43,6 +43,9 @@
       <HintPath>..\dependencies\shared\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NHibernate">
+      <HintPath>..\dependencies\shared\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
