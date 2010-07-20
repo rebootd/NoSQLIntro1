@@ -7,7 +7,7 @@ namespace BlogRavenDB.Models
 {
     public class Post
     {
-        public virtual string Id { get; set; }
+        public virtual Guid Id { get; set; }
         public virtual string Hash { get; set; }
         public virtual string Title { get; set; }
         public virtual string Content { get; set; }
