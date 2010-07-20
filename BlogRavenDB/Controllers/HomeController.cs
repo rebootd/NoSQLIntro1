@@ -8,14 +8,21 @@ using BlogRavenDB.Models;
 namespace BlogRavenDB.Controllers
 {
     [HandleError]
-    public class ApplicationController : BaseController
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
             ViewData["Message"] = "Welcome to ASP.NET MVC!";
-            Post[] posts = DocumentSession.Query<Post>("PostsByPublishedDate")
-                            .Where(x => x.Published > DateTime.Now)
-                            .ToArray();
+
+            var postsQuery = DocumentSession.Query<Post>("PostsByPublished")
+                .Where(p => p.Published > DateTime.Now.AddDays(-7));
+
+            Post[] posts = { };
+            if(postsQuery != null)
+            {
+                posts = postsQuery.ToArray();
+            }
+
             return View();
         }
 

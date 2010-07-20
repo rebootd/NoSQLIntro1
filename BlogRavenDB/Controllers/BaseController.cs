@@ -15,8 +15,7 @@ namespace BlogRavenDB.Controllers
         {
             get
             {
-                IDocumentSession session = (IDocumentSession)HttpContext.Items[MvcApplication.SESSION_KEY];
-                return session;
+                return MvcApplication.CurrentSession;
             }
         }
     }
