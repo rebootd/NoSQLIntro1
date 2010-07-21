@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="Migrations\InitialMigration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Author.cs" />
     <Compile Include="Models\Mapping\PostMap.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

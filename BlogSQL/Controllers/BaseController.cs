@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NHibernate;
+using BlogSQL.Models;
 
 namespace BlogSQL.Controllers
 {
@@ -19,6 +21,31 @@ namespace BlogSQL.Controllers
                     throw new Exception("No ISession found int HttpContext");
                 return HttpContext.Items[MvcApplication.SESSION_KEY] as ISession;
             }
+        }
+
+        public bool IsLoggedIn
+        {
+            get
+            {
+                return (CurrentAuthor == null);
+            }
+        }
+
+        public Author CurrentAuthor
+        {
+            get
+            {
+                return Session["author"] as Author;
+            }
+            protected set
+            {
+                Session["author"] = value;
+            }
+        }
+
+        protected void LogoffAuthor()
+        {
+            Session.Clear();
         }
     }
 }

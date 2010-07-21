@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BlogMongoDB.Models;
 using Norm;
 
 namespace BlogMongoDB.Controllers
@@ -15,6 +16,31 @@ namespace BlogMongoDB.Controllers
 
         public BaseController()
         {
+        }
+
+        public bool IsLoggedIn
+        {
+            get 
+            {
+                return (CurrentAuthor == null);
+            }
+        }
+
+        public Author CurrentAuthor
+        {
+            get
+            {
+                return Session["author"] as Author;
+            }
+            protected set
+            {
+                Session["author"] = value;
+            }
+        }
+
+        protected void LogoffAuthor()
+        {
+            Session.Clear();
         }
 
         public static string ConnectionString()

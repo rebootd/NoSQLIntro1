@@ -14,14 +14,14 @@ namespace BlogRavenDB.Controllers
         {
             ViewData["Message"] = "Welcome to ASP.NET MVC!";
 
-            var postsQuery = DocumentSession.Query<Post>("PostsByPublished")
-                .Where(p => p.Published > DateTime.Now.AddDays(-7));
+            //var postsQuery = DocumentSession.Query<Post>("PostsByPublished")
+            //    .Where(p => p.Published > DateTime.Now.AddDays(-7));
 
-            Post[] posts = { };
-            if(postsQuery != null)
-            {
-                posts = postsQuery.ToArray();
-            }
+            //Post[] posts = { };
+            //if(postsQuery != null)
+            //{
+            //    posts = postsQuery.ToArray();
+            //}
 
             return View();
         }
