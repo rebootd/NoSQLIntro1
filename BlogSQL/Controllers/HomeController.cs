@@ -13,6 +13,17 @@ namespace BlogSQL.Controllers
         public ActionResult Index()
         {
             ViewData["Message"] = "Welcome to ASP.NET MVC!";
+
+            //var post = new Post()
+            //{
+            //    Hash = "test-post",
+            //    Title = "test post",
+            //    Content = "test post content",
+            //    Published = DateTime.Now.AddDays(-7),
+            //    Created = DateTime.Now
+            //};
+            //DataSession.SaveOrUpdate(post);
+
             var posts = DataSession.CreateCriteria<Post>().List<Post>();
 
             return View();
