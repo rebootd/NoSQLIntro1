@@ -26,7 +26,38 @@ namespace BlogSQL.Controllers
 
             var posts = DataSession.CreateCriteria<Post>().List<Post>();
 
+            return View(posts);
+        }
+
+        public ActionResult Show(Guid id)
+        {
+            var post = DataSession.Load<Post>(id);
+            return View(post);
+        }
+
+        public ActionResult New()
+        {
             return View();
+        }
+
+        public ActionResult Edit(Guid id)
+        {
+            var post = DataSession.Load<Post>(id);
+            return View(post);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Post post)
+        {
+            //DataSession.SaveOrUpdate(post);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPut]
+        public ActionResult Update(Post post)
+        {
+            //DataSession.SaveOrUpdate(post);
+            return RedirectToAction("Index");
         }
 
         public ActionResult About()

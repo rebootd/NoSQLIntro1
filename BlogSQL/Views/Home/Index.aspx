@@ -1,12 +1,22 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<List<BlogSQL.Models.Post>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Home Page
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2><%: ViewData["Message"] %></h2>
-    <p>
-        To learn more about ASP.NET MVC visit <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
-    </p>
+    <h2>Recent Posts</h2>
+    <ul id="postlist">
+    <% foreach (var post in Model) { %>
+    <li>
+        <%= Html.ActionLink(post.Title, "Show", new { id = post.Id })%>
+        <br />
+        <%= Html.Encode(post.Content) %>
+        <% if (Session["author"] != null) { %>
+        <br />
+        <%= Html.ActionLink("Edit", "Edit", new { id = post.Id })%>
+        <% } %>
+    </li>
+    <% } %>
+    </ul>
 </asp:Content>
