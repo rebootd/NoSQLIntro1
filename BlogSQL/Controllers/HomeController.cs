@@ -35,29 +35,57 @@ namespace BlogSQL.Controllers
             return View(post);
         }
 
+        [CustomAuthorize]
         public ActionResult New()
         {
             return View();
         }
 
+        [CustomAuthorize]
         public ActionResult Edit(Guid id)
         {
             var post = DataSession.Load<Post>(id);
             return View(post);
         }
 
+        [CustomAuthorize]
         [HttpPost]
-        public ActionResult Create(Post post)
+        public ActionResult New(Post post)
         {
-            //DataSession.SaveOrUpdate(post);
-            return RedirectToAction("Index");
+            if (post.Title != null && post.Title.Length>0 && post.Content!=null && post.Content.Length>0)
+            {
+                post.Published = DateTime.Now;
+                post.Created = DateTime.Now;
+                DataSession.SaveOrUpdate(post);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Some fields are invalid.");
+                return View(post);
+            }
         }
 
-        [HttpPut]
-        public ActionResult Update(Post post)
+        [CustomAuthorize]
+        [HttpPost]
+        public ActionResult Edit(Guid id, Post post)
         {
-            //DataSession.SaveOrUpdate(post);
-            return RedirectToAction("Index");
+            //get teh original and update it
+            Post original = DataSession.Load<Post>(id);
+            if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
+            {
+                original.Hash = post.Hash;
+                original.Title = post.Title;
+                original.Content = post.Content;
+
+                DataSession.SaveOrUpdate(original);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Some fields are invalid.");
+                return View(post);
+            }
         }
 
         public ActionResult About()

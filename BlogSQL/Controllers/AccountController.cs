@@ -29,6 +29,7 @@ namespace BlogSQL.Controllers
         {
             if (ConfigurationManager.AppSettings["username"] == author.Username && ConfigurationManager.AppSettings["password"] == author.Password)
             {
+                //HttpContext.User.Identity
                 CurrentAuthor = author;
                 if (!String.IsNullOrEmpty(returnUrl))
                 {
