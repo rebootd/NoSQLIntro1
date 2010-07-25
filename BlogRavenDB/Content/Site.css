@@ -342,3 +342,18 @@ div#title
 {
     width: 6em;
 }
+/* Post list styles */
+ul#postlist
+{
+    border-bottom: 1px #5C87B2 solid;
+    padding: 0 0 2px;
+    margin: 0;
+}
+
+ul#postlist li
+{
+    display: inline;
+    list-style: none;
+    padding: 2px  2px 10px 2px;
+    display: block;
+}

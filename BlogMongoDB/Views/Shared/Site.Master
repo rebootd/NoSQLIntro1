@@ -30,6 +30,9 @@
         </div>
 
         <div id="main">
+            <div id="AuthorNav">
+                <% Html.RenderPartial("AuthorNavControl"); %>
+            </div>
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
 
             <div id="footer">

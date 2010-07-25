@@ -10,19 +10,97 @@ namespace BlogRavenDB.Controllers
     [HandleError]
     public class HomeController : BaseController
     {
+        //stupid hackery cause I'm trying to do this with limited time..
+        //public ActionResult AddPost()
+        //{
+        //    Post p = new Post()
+        //    {
+        //        Hash = "test-post",
+        //        Title = "test post",
+        //        Content = "test post content",
+        //        Published = DateTime.Now.AddDays(-1),
+        //        Created = DateTime.Now
+        //    };
+        //    DocumentSession.Store(p);
+        //    DocumentSession.SaveChanges();
+
+        //    return RedirectToAction("Index", "Home");
+        //}
+
         public ActionResult Index()
         {
-            ViewData["Message"] = "Welcome to ASP.NET MVC!";
+            var postsQuery = DocumentSession.Query<Post>("PostsByPublished")
+                .Where(p => p.Published > DateTime.Now.AddDays(-7));
 
-            //var postsQuery = DocumentSession.Query<Post>("PostsByPublished")
-            //    .Where(p => p.Published > DateTime.Now.AddDays(-7));
+            List<Post> posts = new List<Post>();
+            if (postsQuery != null)
+            {
+                posts = postsQuery.ToList();
+            }
 
-            //Post[] posts = { };
-            //if(postsQuery != null)
+            return View(posts);
+        }
+
+        public ActionResult Show(string id)
+        {
+            //var post = DataSession.Load<Post>(id);
+            //return View(post);
+            return View();
+        }
+
+        [CustomAuthorize]
+        public ActionResult New()
+        {
+            return View();
+        }
+
+        [CustomAuthorize]
+        public ActionResult Edit(Guid id)
+        {
+            //var post = DataSession.Load<Post>(id);
+            //return View(post);
+            return View();
+        }
+
+        [CustomAuthorize]
+        [HttpPost]
+        public ActionResult New(Post post)
+        {
+            //if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
             //{
-            //    posts = postsQuery.ToArray();
+            //    post.Published = DateTime.Now;
+            //    post.Created = DateTime.Now;
+            //    DataSession.SaveOrUpdate(post);
+            //    return RedirectToAction("Index", "Home");
             //}
+            //else
+            //{
+            //    ModelState.AddModelError("", "Some fields are invalid.");
+            //    return View(post);
+            //}
+            return View();
+        }
 
+        [CustomAuthorize]
+        [HttpPost]
+        public ActionResult Edit(Guid id, Post post)
+        {
+            //get teh original and update it
+            //Post original = DataSession.Load<Post>(id);
+            //if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
+            //{
+            //    original.Hash = post.Hash;
+            //    original.Title = post.Title;
+            //    original.Content = post.Content;
+
+            //    DataSession.SaveOrUpdate(original);
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //else
+            //{
+            //    ModelState.AddModelError("", "Some fields are invalid.");
+            //    return View(post);
+            //}
             return View();
         }
 

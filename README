@@ -1,0 +1,27 @@
+This is project is partly for my own expirementation, and partly as a dmoe for NoSQL approaches to persistence.
+
+I will be updating notes periodically, including usefil information for each database setup. 
+
+Most of what you need is available in the codebase. However, there are a couple setup steps. You will need a sqlexpress instance running.  The connection string is available in BlogSQL\web.config.  There are batch files to start each of the NoSQL servers, which don't require any additional install.  Any specific instructions for each will be noted below.
+
+::SQL Server
+
+::MongoDB
+
+::RavenDB
+You must start the RavenDB server and add the required indexes so that queires will work. The Query name and map/reduce is listed below.
+
+
+Name: PostsByPublished
+
+Map:
+from doc in docs
+select new
+{
+  Published = doc.Published
+}
+
+
+Reduce:
+
+

@@ -13,7 +13,7 @@ namespace BlogMongoDB.Controllers
     {
         public ActionResult Index()
         {
-            ViewData["Message"] = "Welcome to ASP.NET MVC!";
+            //ViewData["Message"] = "Welcome to ASP.NET MVC!";
 
             //var post = new Post()
             //{
@@ -24,37 +24,83 @@ namespace BlogMongoDB.Controllers
             //    Created = DateTime.Now
             //};
 
+            List<Post> posts = new List<Post>();
             using (var db = Mongo.Create(ConnectionString()))
             {
                 var collPosts = db.GetCollection<Post>();
                 //collPosts.Insert(post);
                 var col = collPosts.Find();
-                int count = col == null ? 0 : col.Count();
+                if (col != null)
+                    posts = col.ToList();
             }
 
-            return View();
+            return View(posts);
         }
 
-        public ActionResult About()
+        public ActionResult Show(Guid id)
         {
+            //var post = DataSession.Load<Post>(id);
+            //return View(post);
             return View();
         }
 
-        [Authorize]
+        [CustomAuthorize]
         public ActionResult New()
         {
             return View();
         }
 
-        [Authorize]
-        public ActionResult Edit()
+        [CustomAuthorize]
+        public ActionResult Edit(Guid id)
         {
+            //var post = DataSession.Load<Post>(id);
+            //return View(post);
             return View();
         }
 
+        [CustomAuthorize]
         [HttpPost]
-        [HttpPut]
-        public ActionResult Update(Post post)
+        public ActionResult New(Post post)
+        {
+            //if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
+            //{
+            //    post.Published = DateTime.Now;
+            //    post.Created = DateTime.Now;
+            //    DataSession.SaveOrUpdate(post);
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //else
+            //{
+            //    ModelState.AddModelError("", "Some fields are invalid.");
+            //    return View(post);
+            //}
+            return View();
+        }
+
+        [CustomAuthorize]
+        [HttpPost]
+        public ActionResult Edit(Guid id, Post post)
+        {
+            //get teh original and update it
+            //Post original = DataSession.Load<Post>(id);
+            //if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
+            //{
+            //    original.Hash = post.Hash;
+            //    original.Title = post.Title;
+            //    original.Content = post.Content;
+
+            //    DataSession.SaveOrUpdate(original);
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //else
+            //{
+            //    ModelState.AddModelError("", "Some fields are invalid.");
+            //    return View(post);
+            //}
+            return View();
+        }
+
+        public ActionResult About()
         {
             return View();
         }
