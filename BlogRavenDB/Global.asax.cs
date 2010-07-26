@@ -25,6 +25,12 @@ namespace BlogRavenDB
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // urls with raven's id, which include /
+            routes.MapRoute(
+                "WithParam",                                              // Route name
+                "{controller}/{action}/{*id}"                         // URL with parameters
+                );
+
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters

@@ -43,9 +43,8 @@ namespace BlogRavenDB.Controllers
 
         public ActionResult Show(string id)
         {
-            //var post = DataSession.Load<Post>(id);
-            //return View(post);
-            return View();
+            var post = DocumentSession.Load<Post>(id);
+            return View(post);
         }
 
         [CustomAuthorize]
@@ -55,53 +54,53 @@ namespace BlogRavenDB.Controllers
         }
 
         [CustomAuthorize]
-        public ActionResult Edit(Guid id)
+        public ActionResult Edit(string id)
         {
-            //var post = DataSession.Load<Post>(id);
-            //return View(post);
-            return View();
+            var post = DocumentSession.Load<Post>(id);
+            return View(post);
         }
 
         [CustomAuthorize]
         [HttpPost]
         public ActionResult New(Post post)
         {
-            //if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
-            //{
-            //    post.Published = DateTime.Now;
-            //    post.Created = DateTime.Now;
-            //    DataSession.SaveOrUpdate(post);
-            //    return RedirectToAction("Index", "Home");
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError("", "Some fields are invalid.");
-            //    return View(post);
-            //}
-            return View();
+            if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
+            {
+                post.Published = DateTime.Now;
+                post.Created = DateTime.Now;
+                DocumentSession.Store(post);
+                DocumentSession.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Some fields are invalid.");
+                return View(post);
+            }
+            //return View();
         }
 
         [CustomAuthorize]
         [HttpPost]
-        public ActionResult Edit(Guid id, Post post)
+        public ActionResult Edit(string id, Post post)
         {
             //get teh original and update it
-            //Post original = DataSession.Load<Post>(id);
-            //if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
-            //{
-            //    original.Hash = post.Hash;
-            //    original.Title = post.Title;
-            //    original.Content = post.Content;
+            Post original = DocumentSession.Load<Post>(id);
+            if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
+            {
+                original.Hash = post.Hash;
+                original.Title = post.Title;
+                original.Content = post.Content;
 
-            //    DataSession.SaveOrUpdate(original);
-            //    return RedirectToAction("Index", "Home");
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError("", "Some fields are invalid.");
-            //    return View(post);
-            //}
-            return View();
+                DocumentSession.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Some fields are invalid.");
+                return View(post);
+            }
+            //return View();
         }
 
         public ActionResult About()
