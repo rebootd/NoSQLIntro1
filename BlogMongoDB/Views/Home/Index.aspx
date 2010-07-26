@@ -9,7 +9,6 @@
     <ul id="postlist">
     <% foreach (var post in Model) { %>
     <li>
-        <a href="<%: Url.Action("Show", new { id = post.Id }) %>"><%= post.Title %></a><br />
         <%= Html.ActionLink(post.Title, "Show", new { id = post.Id })%>
         <br />
         <%= Html.Encode(post.Content) %>

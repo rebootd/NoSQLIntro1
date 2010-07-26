@@ -11,24 +11,32 @@ namespace BlogMongoDB.Controllers
     [HandleError]
     public class HomeController : BaseController
     {
+        //hackery..
+        //public ActionResult AddPost()
+        //{
+        //    var post = new Post()
+        //    {
+        //        Hash = "test-post",
+        //        Title = "test post",
+        //        Content = "test post content",
+        //        Published = DateTime.Now.AddDays(-1),
+        //        Created = DateTime.Now
+        //    };
+
+        //    using (var db = Mongo.Create(ConnectionString()))
+        //    {
+        //        var collPosts = db.GetCollection<Post>();
+        //        collPosts.Insert(post);
+        //    }
+        //    return RedirectToAction("Index");
+        //}
+
         public ActionResult Index()
         {
-            //ViewData["Message"] = "Welcome to ASP.NET MVC!";
-
-            //var post = new Post()
-            //{
-            //    Hash = "test-post",
-            //    Title = "test post",
-            //    Content = "test post content",
-            //    Published = DateTime.Now.AddDays(-1),
-            //    Created = DateTime.Now
-            //};
-
             List<Post> posts = new List<Post>();
             using (var db = Mongo.Create(ConnectionString()))
             {
                 var collPosts = db.GetCollection<Post>();
-                //collPosts.Insert(post);
                 var col = collPosts.Find();
                 if (col != null)
                     posts = col.ToList();
@@ -39,9 +47,13 @@ namespace BlogMongoDB.Controllers
 
         public ActionResult Show(Guid id)
         {
-            //var post = DataSession.Load<Post>(id);
-            //return View(post);
-            return View();
+            using (var db = Mongo.Create(ConnectionString()))
+            {
+                var collPosts = db.GetCollection<Post>();
+                //Post post = collPosts.Find(new Post { id = id });
+                Post post = collPosts.FindOne(new { Id = id });
+                return View(post);
+            }
         }
 
         [CustomAuthorize]
@@ -53,9 +65,13 @@ namespace BlogMongoDB.Controllers
         [CustomAuthorize]
         public ActionResult Edit(Guid id)
         {
-            //var post = DataSession.Load<Post>(id);
-            //return View(post);
-            return View();
+            using (var db = Mongo.Create(ConnectionString()))
+            {
+                var collPosts = db.GetCollection<Post>();
+                //Post post = collPosts.Find(new Post { id = id });
+                Post post = collPosts.FindOne(new { Id = id });
+                return View(post);
+            }
         }
 
         [CustomAuthorize]
