@@ -50,7 +50,6 @@ namespace BlogMongoDB.Controllers
             using (var db = Mongo.Create(ConnectionString()))
             {
                 var collPosts = db.GetCollection<Post>();
-                //Post post = collPosts.Find(new Post { id = id });
                 Post post = collPosts.FindOne(new { Id = id });
                 return View(post);
             }
@@ -68,7 +67,6 @@ namespace BlogMongoDB.Controllers
             using (var db = Mongo.Create(ConnectionString()))
             {
                 var collPosts = db.GetCollection<Post>();
-                //Post post = collPosts.Find(new Post { id = id });
                 Post post = collPosts.FindOne(new { Id = id });
                 return View(post);
             }
@@ -78,42 +76,49 @@ namespace BlogMongoDB.Controllers
         [HttpPost]
         public ActionResult New(Post post)
         {
-            //if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
-            //{
-            //    post.Published = DateTime.Now;
-            //    post.Created = DateTime.Now;
-            //    DataSession.SaveOrUpdate(post);
-            //    return RedirectToAction("Index", "Home");
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError("", "Some fields are invalid.");
-            //    return View(post);
-            //}
-            return View();
+            if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
+            {
+                post.Id = Guid.NewGuid();
+                post.Published = DateTime.Now;
+                post.Created = DateTime.Now;
+                using (var db = Mongo.Create(ConnectionString()))
+                {
+                    var collPosts = db.GetCollection<Post>();
+                    collPosts.Insert(post);
+                }
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Some fields are invalid.");
+                return View(post);
+            }
         }
 
         [CustomAuthorize]
         [HttpPost]
         public ActionResult Edit(Guid id, Post post)
-        {
-            //get teh original and update it
-            //Post original = DataSession.Load<Post>(id);
-            //if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
-            //{
-            //    original.Hash = post.Hash;
-            //    original.Title = post.Title;
-            //    original.Content = post.Content;
+        {   
+            using (var db = Mongo.Create(ConnectionString()))
+            {
+                var collPosts = db.GetCollection<Post>();
+                Post original = collPosts.FindOne(new { Id = id });
 
-            //    DataSession.SaveOrUpdate(original);
-            //    return RedirectToAction("Index", "Home");
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError("", "Some fields are invalid.");
-            //    return View(post);
-            //}
-            return View();
+                if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
+                {
+                    original.Hash = post.Hash;
+                    original.Title = post.Title;
+                    original.Content = post.Content;
+
+                    collPosts.Save(original);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Some fields are invalid.");
+                    return View(post);
+                }
+            }
         }
 
         public ActionResult About()
