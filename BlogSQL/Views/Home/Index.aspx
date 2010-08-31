@@ -6,17 +6,5 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Recent Posts</h2>
-    <ul id="postlist">
-    <% foreach (var post in Model) { %>
-    <li>
-        <%= Html.ActionLink(post.Title, "Show", new { id = post.Id })%>
-        <br />
-        <%= Html.Encode(post.Content) %>
-        <% if (Session["author"] != null) { %>
-        <br />
-        <%= Html.ActionLink("Edit", "Edit", new { id = post.Id })%>
-        <% } %>
-    </li>
-    <% } %>
-    </ul>
+    <% Html.RenderPartial("PostList", Model); %>
 </asp:Content>

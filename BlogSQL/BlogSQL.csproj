@@ -90,12 +90,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\TagsUpdate.cs" />
+    <Compile Include="Migrations\TagsMigration.cs" />
     <Compile Include="Migrations\InitialMigration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Author.cs" />
+    <Compile Include="Models\Mapping\TagMap.cs" />
     <Compile Include="Models\Mapping\PostMap.cs" />
     <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\TagTests.cs" />
     <Compile Include="Tests\PostTests.cs" />
     <Compile Include="Tests\TestBase.cs" />
   </ItemGroup>
@@ -108,6 +113,8 @@
     <Content Include="Views\Shared\PostDetail.aspx" />
     <Content Include="Views\Shared\PostList.aspx" />
     <Content Include="Views\Shared\PostSummary.aspx" />
+    <Content Include="Views\Shared\TagEntry.aspx" />
+    <Content Include="Views\Shared\TagList.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -30,6 +30,10 @@
                     <%= Html.ValidationMessage("Content", "*") %>
                 </p>
 
+				<p>
+					<% Html.RenderPartial("TagEntry", (IList<BlogSQL.Models.Tag>)Model.Tags); %>
+				</p>
+
                 <p>
                     <input type="submit" value="Create" />
                 </p>

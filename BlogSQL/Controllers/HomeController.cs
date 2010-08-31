@@ -56,6 +56,12 @@ namespace BlogSQL.Controllers
             {
                 post.Published = DateTime.Now;
                 post.Created = DateTime.Now;
+				//update tags
+				string taglist = Request.Form["Tags"];
+				string[] tags = taglist.Split(',');
+				foreach (string tag in tags)
+					post.Tags.Add(new Tag { Name = tag, Post = post });
+
                 DataSession.SaveOrUpdate(post);
                 return RedirectToAction("Index", "Home");
             }
@@ -77,6 +83,13 @@ namespace BlogSQL.Controllers
                 original.Hash = post.Hash;
                 original.Title = post.Title;
                 original.Content = post.Content;
+				ClearOldTags(original);
+				//update tags
+				string taglist = Request.Form["Tags"];
+				string[] tags = taglist.Split(',');
+				
+				foreach(string tag in tags)
+					if(tag!=null && tag.Length>0) original.Tags.Add(new Tag {Name = tag, Post = original });
 
                 DataSession.SaveOrUpdate(original);
                 return RedirectToAction("Index", "Home");
@@ -87,6 +100,15 @@ namespace BlogSQL.Controllers
                 return View(post);
             }
         }
+
+		private void ClearOldTags(Post post)
+		{
+			foreach (Tag tag in post.Tags)
+			{
+				DataSession.Delete(tag);
+			}
+			post.Tags.Clear(); //remove old tags
+		}
 
         public ActionResult About()
         {

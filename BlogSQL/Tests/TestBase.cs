@@ -24,6 +24,7 @@ namespace BlogSQL.Tests
         public TestBase()
         {
             _session = CreateSessionFactory().OpenSession();
+			EnsureMigration();
         }
 
         ~TestBase()
@@ -40,9 +41,9 @@ namespace BlogSQL.Tests
             }
         }
 
+		private string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=NoSQLInto1;Integrated Security=True;Pooling=False";
         private ISessionFactory CreateSessionFactory()
-        {
-            string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=NoSQLInto1;Integrated Security=True;Pooling=False";
+        {   
             return Fluently.Configure()
                 .Database(
                     FluentNHibernate.Cfg.Db.MsSqlConfiguration.MsSql2008.ConnectionString(c => c.Is(connectionString))
@@ -50,5 +51,22 @@ namespace BlogSQL.Tests
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<BlogSQL.Models.Post>())
                 .BuildSessionFactory();
         }
+
+		private void EnsureMigration()
+		{
+			var connection = new System.Data.SqlClient.SqlConnection(connectionString);
+			connection.Open();
+			var processor = new SqlServerProcessor(connection, new SqlServer2000Generator(),
+				new TextWriterAnnouncer(System.Console.Out), new ProcessorOptions());
+			var conventions = new MigrationConventions();
+			var versionRunner = new FluentMigrator.Runner.MigrationVersionRunner(conventions, processor,
+				new MigrationLoader(conventions), new NullAnnouncer());
+			//var runner = new MigrationRunner(conventions, processor, new TextWriterAnnouncer(System.Console.Out), new StopWatch());
+			//runner.Up(new TestCreateAndDropTableMigration());
+			versionRunner.MigrateUp();
+
+			versionRunner = null;
+			connection = null;
+		}
     }
 }
