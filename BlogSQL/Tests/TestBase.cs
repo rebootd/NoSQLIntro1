@@ -16,6 +16,7 @@ using FluentNHibernate.Cfg.Db;
 
 namespace BlogSQL.Tests
 {
+	//testing git branching
     public class TestBase
     {
         private ISession _session = null; //CreateSessionFactory().OpenSession();
