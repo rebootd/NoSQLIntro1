@@ -3,7 +3,7 @@
     if (Session["author"] != null)
     {
 %>
-    <ul id="menu">              
+    <ul id="authormenu">              
         <li><%: Html.ActionLink("New Post", "New", "Home")%></li>
     </ul>
 <%
