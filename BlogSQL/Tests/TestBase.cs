@@ -41,7 +41,7 @@ namespace BlogSQL.Tests
 
         private ISessionFactory CreateSessionFactory()
         {
-            string connectionString = System.Configuration.ConfigurationManager.AppSettings["connectionString"];
+            string connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=NoSQLInto1;Integrated Security=True;Pooling=False";
             return Fluently.Configure()
                 .Database(
                     FluentNHibernate.Cfg.Db.MsSqlConfiguration.MsSql2008.ConnectionString(c => c.Is(connectionString))
