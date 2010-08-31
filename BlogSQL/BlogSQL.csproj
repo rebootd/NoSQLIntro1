@@ -100,6 +100,9 @@
     <Content Include="Views\Home\New.aspx" />
     <Content Include="Views\Home\Show.aspx" />
     <Content Include="Views\Shared\AuthorNavControl.ascx" />
+    <Content Include="Views\Shared\PostDetail.aspx" />
+    <Content Include="Views\Shared\PostList.aspx" />
+    <Content Include="Views\Shared\PostSummary.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

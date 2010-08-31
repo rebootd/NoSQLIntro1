@@ -29,8 +29,8 @@ namespace BlogRavenDB.Controllers
 
         public ActionResult Index()
         {
-            var postsQuery = DocumentSession.Query<Post>("PostsByPublished")
-                .Where(p => p.Published > DateTime.Now.AddDays(-7));
+            var postsQuery = DocumentSession.Query<Post>("PostsByPublished");
+                //.Where(p => p.Published < DateTime.Now);
 
             List<Post> posts = new List<Post>();
             if (postsQuery != null)
