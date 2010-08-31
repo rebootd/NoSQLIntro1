@@ -5,9 +5,9 @@ I will be updating notes periodically, including usefil information for each dat
 Most of what you need is available in the codebase. However, there are a couple setup steps. You will need a sqlexpress instance running.  The connection string is available in BlogSQL\web.config.  There are batch files to start each of the NoSQL servers, which don't require any additional install.  Any specific instructions for each will be noted below.
 
 ::Recommendations::
-- Use tests even though this demo doesn't
+- Use good tests even though this demo doesn't (dont put your tests in the same assembly you plan on deploying)
 - Use something other than Webforms, like Spark or Monorail.
-- Consider your goal and environment before chosing SQL or NoSQL or both
+- Consider your goal before chosing SQL or NoSQL or both
 
 ::SQL Server::
 
