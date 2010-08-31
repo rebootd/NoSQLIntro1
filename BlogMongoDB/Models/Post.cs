@@ -15,5 +15,6 @@ namespace BlogMongoDB.Models
         public virtual string Content { get; set; }
         public virtual DateTime Published { get; set; }
         public virtual DateTime Created { get; set; }
+		public List<Tag> Tags { get; set; }
     }
 }

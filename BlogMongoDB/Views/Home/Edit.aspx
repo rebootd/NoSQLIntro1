@@ -30,8 +30,12 @@
                     <%= Html.ValidationMessage("Content", "*") %>
                 </p>
 
+				<p>
+				  <% Html.RenderPartial("TagEntry", Model.Tags); %>
+				</p>
+
                 <p>
-                    <input type="submit" value="Create" />
+                    <input type="submit" value="Update" />
                 </p>
             </fieldset> 
         <% } %> 

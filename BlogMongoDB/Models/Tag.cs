@@ -8,5 +8,6 @@ namespace BlogMongoDB.Models
 {
     public class Tag
     {
+		public virtual string Name { get; set; }
     }
 }

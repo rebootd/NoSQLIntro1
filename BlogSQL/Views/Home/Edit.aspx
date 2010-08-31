@@ -35,7 +35,7 @@
 				</p>
 
                 <p>
-                    <input type="submit" value="Create" />
+                    <input type="submit" value="Update" />
                 </p>
             </fieldset> 
         <% } %> 

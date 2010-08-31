@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<IList<BlogMongoDB.Models.Tag>>" %>
+﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<List<BlogMongoDB.Models.Tag>>" %>
 <% string lst = ""; %>
 <% foreach (var tag in Model) {
 	   lst += tag.Name + ",";

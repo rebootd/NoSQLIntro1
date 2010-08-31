@@ -30,6 +30,10 @@
                     <%= Html.ValidationMessage("Content", "*") %>
                 </p>
 
+				<p>
+				  <% Html.RenderPartial("TagEntry", new List<BlogMongoDB.Models.Tag>()); %>
+				</p>
+
                 <p>
                     <input type="submit" value="Create" />
                 </p>
