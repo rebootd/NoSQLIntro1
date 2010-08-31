@@ -14,19 +14,4 @@ Most of what you need is available in the codebase. However, there are a couple 
 ::MongoDB::
 
 ::RavenDB::
-You must start the RavenDB server and add the required indexes so that queires will work. The Query name and map/reduce is listed below.
-
-
-Name: PostsByPublished
-
-Map:
-from doc in docs
-select new
-{
-  Published = doc.Published
-}
-
-
-Reduce:
-
-
+RavenDB requires indexes in order to query data. You can create queries using the Web UI or, as this demo does, using code.
