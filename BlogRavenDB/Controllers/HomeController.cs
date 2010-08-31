@@ -68,6 +68,13 @@ namespace BlogRavenDB.Controllers
             {
                 post.Published = DateTime.Now;
                 post.Created = DateTime.Now;
+				//update tags
+				string taglist = Request.Form["Tags"];
+				string[] tags = taglist.Split(',');
+
+				foreach (string tag in tags)
+					if (tag != null && tag.Length > 0) post.Tags.Add(new Tag { Name = tag });
+
                 DocumentSession.Store(post);
                 DocumentSession.SaveChanges();
                 return RedirectToAction("Index", "Home");
@@ -91,6 +98,12 @@ namespace BlogRavenDB.Controllers
                 original.Hash = post.Hash;
                 original.Title = post.Title;
                 original.Content = post.Content;
+				//update tags
+				string taglist = Request.Form["Tags"];
+				string[] tags = taglist.Split(',');
+				original.Tags.Clear();
+				foreach (string tag in tags)
+					if (tag != null && tag.Length > 0) original.Tags.Add(new Tag { Name = tag });
 
                 DocumentSession.SaveChanges();
                 return RedirectToAction("Index", "Home");

@@ -30,6 +30,10 @@
                     <%= Html.ValidationMessage("Content", "*") %>
                 </p>
 
+				<p>
+				  <% Html.RenderPartial("TagEntry", new List<BlogRavenDB.Models.Tag>()); %>
+				</p>
+
                 <p>
                     <input type="submit" value="Create" />
                 </p>

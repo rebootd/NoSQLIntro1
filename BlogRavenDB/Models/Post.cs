@@ -13,5 +13,11 @@ namespace BlogRavenDB.Models
         public virtual string Content { get; set; }
         public virtual DateTime Published { get; set; }
         public virtual DateTime Created { get; set; }
+		public List<Tag> Tags { get; set; }
+
+		public Post()
+		{
+			Tags = new List<Tag>();
+		}
     }
 }
