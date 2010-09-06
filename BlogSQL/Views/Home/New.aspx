@@ -31,7 +31,7 @@
                 </p>
 
 				<p>
-				  <% Html.RenderPartial("TagEntry", new List<BlogMongoDB.Models.Tag>()); %>
+				  <% Html.RenderPartial("TagEntry", new List<BlogSQL.Models.Tag>()); %>
 				</p>
 
                 <p>

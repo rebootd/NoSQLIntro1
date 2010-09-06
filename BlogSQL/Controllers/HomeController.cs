@@ -13,6 +13,7 @@ namespace BlogSQL.Controllers
         public ActionResult Index()
         {
             ViewData["Message"] = "Welcome to ASP.NET MVC!";
+            ViewData["tagcloud"] = GetUniqueTags();
 
             //var post = new Post()
             //{

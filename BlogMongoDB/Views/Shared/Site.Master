@@ -34,7 +34,9 @@
                 <% Html.RenderPartial("AuthorNavControl"); %>
             </div>
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
-
+            <div id=sidebar">
+              side bar..
+            </div>
             <div id="footer">
             </div>
         </div>

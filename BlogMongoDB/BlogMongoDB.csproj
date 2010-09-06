@@ -83,6 +83,7 @@
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\TagTests.cs" />
     <Compile Include="Tests\PostTests.cs" />
     <Compile Include="Tests\TestBase.cs" />
   </ItemGroup>
@@ -92,6 +93,7 @@
     <Content Include="Views\Home\New.aspx" />
     <Content Include="Views\Home\Show.aspx" />
     <Content Include="Views\Shared\AuthorNavControl.ascx" />
+    <Content Include="Views\Shared\TagNav.aspx" />
     <Content Include="Views\Shared\PostSummary.aspx" />
     <Content Include="Views\Shared\PostDetail.aspx" />
     <Content Include="Views\Shared\PostList.aspx" />

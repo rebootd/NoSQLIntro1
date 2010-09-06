@@ -23,6 +23,11 @@ namespace BlogSQL.Controllers
             }
         }
 
+        public ActionResult TagCloud()
+        {
+            return View("TagCloud", GetUniqueTags());
+        }
+
         public bool IsLoggedIn
         {
             get
@@ -46,6 +51,19 @@ namespace BlogSQL.Controllers
         protected void LogoffAuthor()
         {
             Session.Clear();
+        }
+
+        public List<string> GetUniqueTags()
+        {
+            var uniqueTags = from t in DataSession.CreateCriteria<Tag>().List<Tag>()
+                             group t by t.Name into g
+                             select new { SetKey = g.Key, Count = g.Count() };
+
+            List<string> tags = new List<string>();
+            foreach (var entry in uniqueTags)
+                tags.Add(entry.SetKey as string);
+
+            return tags;
         }
     }
 }
