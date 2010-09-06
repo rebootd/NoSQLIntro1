@@ -30,5 +30,20 @@ namespace BlogSQL.Tests
             //}
             //Assert.NotEmpty(uniqueTags);
         }
+
+        [Fact]
+        public void find_posts_by_tag()
+        {
+            string name = "Yours";
+            IList<Tag> tags = DataSession.CreateCriteria(typeof(Tag))
+                    .Add(Restrictions.Eq("Name", name))
+                    .List<Tag>();
+
+            List<Post> posts = new List<Post>();
+            foreach (Tag tag in tags)
+                posts.Add(tag.Post);
+
+            Assert.NotEmpty(posts);
+        }
     }
 }

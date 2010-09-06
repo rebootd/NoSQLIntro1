@@ -27,10 +27,16 @@ namespace BlogSQL
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                "ShowTag", // Route name
+                "tags/show/{name}", // URL with parameters
+                new { controller = "Tags", action = "Show"} // Parameter defaults
+            );
+
+            routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
-            );
+            );           
 
         }
 
