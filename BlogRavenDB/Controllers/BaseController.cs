@@ -28,12 +28,12 @@ namespace BlogRavenDB.Controllers
         public List<string> GetUniqueTags()
         {
             List<string> tags = new List<string>();
-            //var uniqueTags = from t in DocumentSession.Query<Tag>("TagsByName")
-            //                 group t by t.Name into g
-            //                 select new { SetKey = g.Key, Count = g.Count() };
+            var uniqueTags = from t in DocumentSession.LuceneQuery<Tag>("TagsByName")
+                             group t by t.Name into g
+                             select new { SetKey = g.Key, Count = g.Count() };
 
-            //foreach (var entry in uniqueTags)
-            //    tags.Add(entry.SetKey.ToString());
+            foreach (var entry in uniqueTags)
+                tags.Add(entry.SetKey.ToString());
 
             return tags;
         }

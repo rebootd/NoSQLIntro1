@@ -25,17 +25,17 @@ namespace BlogRavenDB
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute(
+                "ShowTag", // Route name
+                "tags/show/{name}", // URL with parameters
+                new { controller = "Tags", action = "Show" } // Parameter defaults
+            );
+
             // urls with raven's id, which include /
             routes.MapRoute(
                 "WithParam",                                              // Route name
                 "{controller}/{action}/{*id}"                         // URL with parameters
                 );
-
-            routes.MapRoute(
-                "TagShow", // Route name
-                "tags/show/{name}", // URL with parameters
-                new { controller = "Tags", action = "Show" }
-            );
 
             routes.MapRoute(
                 "Default", // Route name

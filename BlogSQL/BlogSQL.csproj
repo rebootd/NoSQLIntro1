@@ -111,7 +111,6 @@
     <Content Include="Views\Home\New.aspx" />
     <Content Include="Views\Home\Show.aspx" />
     <Content Include="Views\Shared\AuthorNavControl.ascx" />
-    <Content Include="Views\Shared\Copy of TagCloud.aspx" />
     <Content Include="Views\Shared\TagCloud.aspx" />
     <Content Include="Views\Shared\PostDetail.aspx" />
     <Content Include="Views\Shared\PostList.aspx" />

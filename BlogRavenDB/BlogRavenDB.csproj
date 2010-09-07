@@ -81,6 +81,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="CustomAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -107,6 +108,7 @@
     <Content Include="Views\Shared\TagCloud.aspx" />
     <Content Include="Views\Shared\TagEntry.aspx" />
     <Content Include="Views\Shared\TagList.aspx" />
+    <Content Include="Views\Tags\Show.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
