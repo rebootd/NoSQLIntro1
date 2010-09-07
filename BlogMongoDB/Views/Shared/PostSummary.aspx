@@ -5,8 +5,8 @@
     <%= Html.Encode(Model.Content) %>
     <br />
 	<% Html.RenderPartial("TagList", Model.Tags); %>
-    <% if (Session["author"] != null) { %>
     <br /><br />
+    <% if (Session["author"] != null) { %>
     <%= Html.ActionLink("Edit", "Edit", "Home", new { id = Model.Id }, null)%>
     <% } %>
 </li>
