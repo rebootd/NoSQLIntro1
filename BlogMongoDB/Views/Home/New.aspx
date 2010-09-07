@@ -26,7 +26,7 @@
 
                 <p>
                     <label for="Content">Content:</label>
-                    <%= Html.TextBox("Content") %>
+                    <%= Html.TextArea("Content")%>
                     <%= Html.ValidationMessage("Content", "*") %>
                 </p>
 
