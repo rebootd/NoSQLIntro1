@@ -12,16 +12,13 @@ namespace BlogRavenDB.Controllers
     {
         public ActionResult Index()
         {
-            var postsQuery = DocumentSession.LuceneQuery<Post>("PostsByPublished");
-                //.Where(p => p.Published < DateTime.Now);
-
             List<Post> posts = new List<Post>();
-            if (postsQuery != null && postsQuery.QueryResult != null)
+            var postsQuery = DocumentSession.LuceneQuery<Post>("PostsByPublished")
+                .Where(p => p.Published <= DateTime.Now);
+
+            if (postsQuery != null)
             {
-                var ps = from p in postsQuery
-                         where p.Published <= DateTime.Now
-                         select p;
-                posts = ps.ToList();
+                posts = postsQuery.ToList();
             }
 
             return View(posts);

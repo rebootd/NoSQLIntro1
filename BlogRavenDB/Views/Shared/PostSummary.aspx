@@ -3,9 +3,9 @@
     <%= Html.ActionLink(Model.Title, "Show", new { id = Model.Id })%>
     <br />
     <%= Html.Encode(Model.Content) %>
-    <% if (Session["author"] != null) { %>
     <br />
 	<% Html.RenderPartial("TagList", Model.Tags); %>
+    <% if (Session["author"] != null) { %>    
     <br /><br />
     <%= Html.ActionLink("Edit", "Edit", new { id = Model.Id })%>
     <% } %>
