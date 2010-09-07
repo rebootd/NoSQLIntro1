@@ -14,8 +14,34 @@ namespace BlogMongoDB.Controllers
     {
         private static readonly string _connectionStringHost = ConfigurationManager.AppSettings["connectionStringHost"];
 
-        public BaseController()
+        public ActionResult TagCloud()
         {
+            return View("TagCloud", GetUniqueTags());
+        }
+
+        public List<string> GetUniqueTags()
+        {
+            List<string> tags = new List<string>();
+            using (var db = Mongo.Create(ConnectionString()))
+            {
+                var collPosts = db.GetCollection<Post>();
+                var posts = collPosts.Find(new { Published = Q.LessOrEqual(DateTime.Now) }).ToList();
+                var ts = from p in posts
+                         from t in p.Tags
+                         where p.Tags != null
+                         select t;
+                List<Tag> alltags = ts.ToList<Tag>();
+
+                var uniqueTags = from t in alltags
+                                 group t by t.Name into g
+                                 select new { SetKey = g.Key, Count = g.Count() };
+                foreach (var entry in uniqueTags)
+                {
+                    tags.Add(entry.SetKey.ToString());
+                }
+            }
+
+            return tags;
         }
 
         public bool IsLoggedIn

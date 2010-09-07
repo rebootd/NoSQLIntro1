@@ -17,9 +17,11 @@ namespace BlogMongoDB.Tests
             using (var db = Mongo.Create(ConnectionString()))
             {
                 var collPosts = db.GetCollection<Post>();
-                var col = collPosts.Find();
+                var col = collPosts.Find(new { Published = Q.LessOrEqual(DateTime.Now) });
                 if (col != null)
+                {
                     posts = col.ToList();
+                }
             }
         }
 

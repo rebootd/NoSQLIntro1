@@ -11,35 +11,17 @@ namespace BlogMongoDB.Controllers
     [HandleError]
     public class HomeController : BaseController
     {
-        //hackery..
-        //public ActionResult AddPost()
-        //{
-        //    var post = new Post()
-        //    {
-        //        Hash = "test-post",
-        //        Title = "test post",
-        //        Content = "test post content",
-        //        Published = DateTime.Now.AddDays(-1),
-        //        Created = DateTime.Now
-        //    };
-
-        //    using (var db = Mongo.Create(ConnectionString()))
-        //    {
-        //        var collPosts = db.GetCollection<Post>();
-        //        collPosts.Insert(post);
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
         public ActionResult Index()
         {
             List<Post> posts = new List<Post>();
             using (var db = Mongo.Create(ConnectionString()))
             {
                 var collPosts = db.GetCollection<Post>();
-                var col = collPosts.Find();
+                var col = collPosts.Find(new { Published = Q.LessOrEqual(DateTime.Now) });
                 if (col != null)
+                {
                     posts = col.ToList();
+                }
             }
 
             return View(posts);

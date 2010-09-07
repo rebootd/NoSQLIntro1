@@ -32,13 +32,15 @@
         <div id="main">
             <div id="AuthorNav">
                 <% Html.RenderPartial("AuthorNavControl"); %>
-            </div>
-            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
-            <div id=sidebar">
-              side bar..
-            </div>
+            </div> 
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />            
+
             <div id="footer">
             </div>
+        </div>
+
+        <div id="sidebar">
+             <% Html.RenderAction("TagCloud"); %>
         </div>
     </div>
 </body>

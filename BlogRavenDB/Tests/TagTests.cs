@@ -19,16 +19,21 @@ namespace BlogRavenDB.Tests
             {
                 tags = tagsQuery.ToList();
             }
+            Assert.NotEmpty(tags);
         }
 
         [Fact]
         public void fecth_unique()
         {
+            List<string> tags = new List<string>();
             var uniqueTags = from t in DocumentSession.Query<Tag>("TagsByName")
                              group t by t.Name into g
                              select new { SetKey = g.Key, Count = g.Count() };
 
-            Assert.True(uniqueTags != null);
+            foreach (var entry in uniqueTags.ToList())
+                tags.Add(entry.SetKey.ToString());
+
+            Assert.NotEmpty(tags);
         }
     }
 }

@@ -20,6 +20,24 @@ namespace BlogRavenDB.Controllers
             }
         }
 
+        public ActionResult TagCloud()
+        {
+            return View("TagCloud", GetUniqueTags());
+        }
+
+        public List<string> GetUniqueTags()
+        {
+            List<string> tags = new List<string>();
+            //var uniqueTags = from t in DocumentSession.Query<Tag>("TagsByName")
+            //                 group t by t.Name into g
+            //                 select new { SetKey = g.Key, Count = g.Count() };
+
+            //foreach (var entry in uniqueTags)
+            //    tags.Add(entry.SetKey.ToString());
+
+            return tags;
+        }
+
         public bool IsLoggedIn
         {
             get

@@ -10,15 +10,18 @@ namespace BlogRavenDB.Tests
 {
     public class PostTests : TestBase
     {
-        [Fact]  
+        [Fact]
         public void can_fetch()
         {
-            var postsQuery = DocumentSession.Query<Post>("PostsByPublished");
+            var postsQuery = DocumentSession.LuceneQuery<Post>("PostsByPublished")
+                .WaitForNonStaleResults();
+
             List<Post> posts = new List<Post>();
-            if (postsQuery != null)
+            if (postsQuery != null && postsQuery.QueryResult != null)
             {
                 posts = postsQuery.ToList();
             }
+            Assert.NotEmpty(posts);
         }
 
         [Fact]

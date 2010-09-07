@@ -10,32 +10,18 @@ namespace BlogRavenDB.Controllers
     [HandleError]
     public class HomeController : BaseController
     {
-        //stupid hackery cause I'm trying to do this with limited time..
-        //public ActionResult AddPost()
-        //{
-        //    Post p = new Post()
-        //    {
-        //        Hash = "test-post",
-        //        Title = "test post",
-        //        Content = "test post content",
-        //        Published = DateTime.Now.AddDays(-1),
-        //        Created = DateTime.Now
-        //    };
-        //    DocumentSession.Store(p);
-        //    DocumentSession.SaveChanges();
-
-        //    return RedirectToAction("Index", "Home");
-        //}
-
         public ActionResult Index()
         {
-            var postsQuery = DocumentSession.Query<Post>("PostsByPublished");
+            var postsQuery = DocumentSession.LuceneQuery<Post>("PostsByPublished");
                 //.Where(p => p.Published < DateTime.Now);
 
             List<Post> posts = new List<Post>();
-            if (postsQuery != null)
+            if (postsQuery != null && postsQuery.QueryResult != null)
             {
-                posts = postsQuery.ToList();
+                var ps = from p in postsQuery
+                         where p.Published <= DateTime.Now
+                         select p;
+                posts = ps.ToList();
             }
 
             return View(posts);

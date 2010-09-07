@@ -104,6 +104,7 @@
     <Content Include="Views\Shared\PostDetail.aspx" />
     <Content Include="Views\Shared\PostList.aspx" />
     <Content Include="Views\Shared\PostSummary.aspx" />
+    <Content Include="Views\Shared\TagCloud.aspx" />
     <Content Include="Views\Shared\TagEntry.aspx" />
     <Content Include="Views\Shared\TagList.aspx" />
     <Content Include="Web.config">

@@ -32,6 +32,12 @@ namespace BlogRavenDB
                 );
 
             routes.MapRoute(
+                "TagShow", // Route name
+                "tags/show/{name}", // URL with parameters
+                new { controller = "Tags", action = "Show" }
+            );
+
+            routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
