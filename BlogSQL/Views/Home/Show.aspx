@@ -6,8 +6,6 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2><%= Html.Encode(Model.Title) %></h2>
-    <br />
-    <%= Html.Encode(Model.Content) %>
+    <% Html.RenderPartial("PostDetail", Model); %>
 
 </asp:Content>

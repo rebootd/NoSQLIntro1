@@ -37,6 +37,21 @@ namespace BlogMongoDB.Controllers
             }
         }
 
+        public ActionResult ShowHashed(int year, int month, string hash)
+        {
+            Post post = null;
+            using (var db = Mongo.Create(ConnectionString()))
+            {
+                var collPosts = db.GetCollection<Post>();
+                var pq = collPosts.Find(new { Hash = hash })
+                    .Where(p => p.Published.Year == year && p.Published.Month == month);
+                if (pq != null)
+                    post = pq.ToList()[0];
+                return View("Show", post);
+            }
+            //should probably handle null (post not found) here
+        }
+
         [CustomAuthorize]
         public ActionResult New()
         {

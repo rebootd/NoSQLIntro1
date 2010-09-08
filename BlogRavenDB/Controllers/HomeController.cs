@@ -30,6 +30,18 @@ namespace BlogRavenDB.Controllers
             return View(post);
         }
 
+        public ActionResult ShowHashed(int year, int month, string hash)
+        {
+            Post post = null;
+            var pq = DocumentSession.LuceneQuery<Post>("PostsByPublished")
+                .Where(p => p.Published.Year == year && p.Published.Month == month && p.Hash == hash)
+                .Take(1);
+            if (pq != null)
+                post = pq.ToList()[0];
+            //should probably handle null (post not found) here
+            return View("Show", post);
+        }
+
         [CustomAuthorize]
         public ActionResult New()
         {

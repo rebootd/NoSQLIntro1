@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<BlogRavenDB.Models.Post>" %>
 <li>
-    <%= Html.ActionLink(Model.Title, "Show", "Home", new { id = Model.Id }, null)%>
+    <a href="/<%= Model.Published.Year %>/<%= Model.Published.Month %>/<%= Model.Hash %>"><%= Model.Title %></a>
     <br />
     <%= Html.Encode(Model.Content) %>
     <br />

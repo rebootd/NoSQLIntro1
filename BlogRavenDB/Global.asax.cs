@@ -28,7 +28,13 @@ namespace BlogRavenDB
             routes.MapRoute(
                 "ShowTag", // Route name
                 "tags/show/{name}", // URL with parameters
-                new { controller = "Tags", action = "Show" } // Parameter defaults
+                new { controller = "Tags", action = "Show" }
+            );
+
+            routes.MapRoute(
+                "ShowHashedPost", // Route name
+                "{year}/{month}/{hash}", // URL with parameters
+                new { controller = "Home", action = "ShowHashed" }
             );
 
             // urls with raven's id, which include /
