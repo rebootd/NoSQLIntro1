@@ -5,3 +5,4 @@ obj/
 localsettings.xml
 *.swp
 *~
+data/
