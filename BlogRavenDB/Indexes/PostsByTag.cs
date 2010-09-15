@@ -15,7 +15,8 @@ namespace BlogRavenDB.Indexes
             return new IndexDefinition<Post>
             {
                 Map = posts => from post in posts
-                               select new { post.Tags }
+                               from tag in post.Tags
+                               select new { tag }
             }
             .ToIndexDefinition(DocumentStore.Conventions);
         }
