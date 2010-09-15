@@ -86,6 +86,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Indexes\PostsByHash.cs" />
     <Compile Include="Indexes\PostsByTag.cs" />
     <Compile Include="Indexes\TagsByName.cs" />
     <Compile Include="Indexes\PostsByTitle.cs" />

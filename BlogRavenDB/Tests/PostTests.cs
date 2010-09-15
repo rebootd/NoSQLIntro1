@@ -13,33 +13,42 @@ namespace BlogRavenDB.Tests
         [Fact]
         public void can_fetch()
         {
-            var postsQuery = DocumentSession.LuceneQuery<Post>("PostsByPublished")
-                .WaitForNonStaleResults();
+			List<Post> posts = DocumentSession.LuceneQuery<Post>("PostsByPublished")
+				.WaitForNonStaleResults()
+				.ToList();
 
-            List<Post> posts = new List<Post>();
-            if (postsQuery != null && postsQuery.QueryResult != null)
-            {
-                posts = postsQuery.ToList();
-            }
             Assert.NotEmpty(posts);
         }
+
+		[Fact]
+		public void can_fetch_by_title()
+		{
+			can_fetch_by_index("PostsByTitle");
+		}
+
+		[Fact]
+		public void can_fetch_by_hash()
+		{
+			can_fetch_by_index("PostsByHash");
+		}
+
+		private void can_fetch_by_index(string index)
+		{
+			var posts = DocumentSession.LuceneQuery<Post>(index)
+				.ToList();
+			Assert.NotEmpty(posts);
+		}
 
         [Fact]
         public void can_fetch_by_tag()
         {
             string name = "yours";
 
-            List<Post> posts = new List<Post>();
-            var ps = (from p in DocumentSession.LuceneQuery<Post>("PostsByPublished")
-                      where p.Published <= DateTime.Now
-                      && p.Tags != null
-                      && p.Tags.Any(x => x.Name == name)
-                      select p);
-            if (ps != null)
-                posts = ps.ToList();
+            var posts = DocumentSession.LuceneQuery<Post>("PostsByTag")
+				.Where(x => x.Published <= DateTime.Now && x.Tags.Any(y => y.Name == name))
+				.ToList();            
 
             Assert.NotEmpty(posts);
-
         }
 
         [Fact]
@@ -62,10 +71,20 @@ namespace BlogRavenDB.Tests
                 post.Tags.Add(new Tag { Name = "perf" });
                 session.Store(post);
             }
-            DocumentSession.SaveChanges();
+            
+			session.SaveChanges();
             TimeSpan span = DateTime.Now - start;
             System.Diagnostics.Debug.WriteLine("raven insert span: " + span.TotalMilliseconds.ToString());
             System.Diagnostics.Debug.WriteLine("rows/sec: " + (count / span.TotalSeconds).ToString());
+
+			//now clean up added records
+			var posts = session.LuceneQuery<Post>("PostsByHash")
+				.WaitForNonStaleResults()
+				.Where(x => x.Hash == "perf-test")
+				.ToList();
+			foreach(Post post in posts)
+				session.Delete<Post>(post);
+			session.SaveChanges();
         }
     }
 }

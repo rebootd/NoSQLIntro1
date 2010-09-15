@@ -7,6 +7,7 @@ using Raven.Database;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Database.Indexing;
+using BlogRavenDB.Models;
 
 namespace BlogRavenDB.Tests
 {
@@ -14,8 +15,9 @@ namespace BlogRavenDB.Tests
     {
         private static readonly string _connectionStringHost = ConfigurationManager.AppSettings["connectionStringHost"];
         private DocumentStore _documentStore;
-
-        public TestBase()
+		private IDocumentSession _session = null;
+		
+		public TestBase()
         {
             _documentStore = new DocumentStore { Url = "http://localhost:8080/" };
             _documentStore.Initialize();
@@ -26,15 +28,21 @@ namespace BlogRavenDB.Tests
 
         ~TestBase()
         {
-            if(_documentStore!=null) _documentStore.Dispose();
+			if (_session != null && _session.HasChanges)
+				_session.SaveChanges();
+
+			if (_documentStore != null)
+				_documentStore.Dispose();
             _documentStore = null;
         }
 
         public IDocumentSession DocumentSession
         {
             get
-            {   
-                return _documentStore.OpenSession();
+            {
+				if (_session == null)
+					_session = _documentStore.OpenSession();
+				return _session;
             }
         }
     }

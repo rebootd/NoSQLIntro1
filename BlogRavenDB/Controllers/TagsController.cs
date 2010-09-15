@@ -11,12 +11,9 @@ namespace BlogRavenDB.Controllers
     {
         public ActionResult Show(string name)
         {
-            var posts = (from p in DocumentSession.LuceneQuery<Post>("PostsByPublished")
-                         where p.Published <= DateTime.Now
-                         && p.Tags != null
-                         && p.Tags.Any(x => x.Name == name)
-                         select p)
-                      .ToList();
+			var posts = DocumentSession.LuceneQuery<Post>("PostsByTag")
+				.Where(x => x.Published <= DateTime.Now && x.Tags.Any(y => y.Name == name))
+				.ToList();
 
             return View(posts);
         }

@@ -8,15 +8,14 @@ using BlogRavenDB.Models;
 
 namespace BlogRavenDB.Indexes
 {
-    public class PostsByTag : AbstractIndexCreationTask
+	public class PostsByHash : AbstractIndexCreationTask
     {
         public override IndexDefinition CreateIndexDefinition()
         {
             return new IndexDefinition<Post>
             {
                 Map = posts => from post in posts
-                               from tag in post.Tags
-                               select new { tag }
+                               select new { post.Hash }
             }
             .ToIndexDefinition(DocumentStore.Conventions);
         }

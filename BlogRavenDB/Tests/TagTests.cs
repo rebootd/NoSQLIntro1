@@ -13,25 +13,17 @@ namespace BlogRavenDB.Tests
         [Fact]  
         public void can_fetch()
         {
-            var tagsQuery = DocumentSession.Query<Tag>("TagsByName");
-            List<Tag> tags = new List<Tag>();
-            if (tagsQuery != null)
-            {
-                tags = tagsQuery.ToList();
-            }
+            var tags = DocumentSession.LuceneQuery<Tag>("TagsByName").WaitForNonStaleResults().ToList();
             Assert.NotEmpty(tags);
         }
 
         [Fact]
         public void fecth_unique()
         {
-            List<string> tags = new List<string>();
-            var uniqueTags = from t in DocumentSession.LuceneQuery<Tag>("TagsByName")
-                             group t by t.Name into g
-                             select new { SetKey = g.Key, Count = g.Count() };
-
-            foreach (var entry in uniqueTags.ToList())
-                tags.Add(entry.SetKey.ToString());
+			var alltags = DocumentSession.LuceneQuery<Tag>("TagsByName").WaitForNonStaleResults().ToList();
+			List<string> tags = (from t in alltags
+								 select t.Name)
+								.ToList();
 
             Assert.NotEmpty(tags);
         }
@@ -41,12 +33,9 @@ namespace BlogRavenDB.Tests
         {
             string name = "yours";
 
-            var posts = (from p in DocumentSession.LuceneQuery<Post>("PostsByPublished")
-                      where p.Published <= DateTime.Now
-                      && p.Tags != null
-                      && p.Tags.Any(x => x.Name == name)
-                      select p)
-                      .ToList();
+			var posts = DocumentSession.LuceneQuery<Post>("PostsByTag")
+				.Where(x => x.Published <= DateTime.Now && x.Tags.Any(y => y.Name == name))
+				.ToList();
             
             Assert.NotEmpty(posts);
         }
