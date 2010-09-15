@@ -3,17 +3,29 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using Norm;
 
 namespace BlogMongoDB.Tests
 {
     public class TestBase
     {
         private static readonly string _connectionStringHost = ConfigurationManager.AppSettings["connectionStringHost"];
+		private Mongo _mongo = null;
 
-        public string ConnectionString()
-        {
-            return ConnectionString(null, null, null, null);
-        }
+		public TestBase()
+		{
+			_mongo = Mongo.Create(ConnectionString(null, null, null, null));
+		}
+
+		~TestBase()
+		{
+			_mongo.Dispose();
+		}
+        
+		public Mongo CurrentMongoSession
+		{
+			get{ return _mongo; }
+		}
 
         public string ConnectionString(string query, string database, string userName, string password)
         {

@@ -13,42 +13,29 @@ namespace BlogMongoDB.Controllers
     {
         public ActionResult Index()
         {
-            List<Post> posts = new List<Post>();
-            using (var db = Mongo.Create(ConnectionString()))
-            {
-                var collPosts = db.GetCollection<Post>();
-                var col = collPosts.Find(new { Published = Q.LessOrEqual(DateTime.Now) });
-                if (col != null)
-                {
-                    posts = col.ToList();
-                }
-            }
+            var collPosts = CurrentMongoSession.GetCollection<Post>();
+            var col = collPosts.Find(new { Published = Q.LessOrEqual(DateTime.Now) });
+            var posts = col.ToList();
 
             return View(posts);
         }
 
         public ActionResult Show(Guid id)
-        {
-            using (var db = Mongo.Create(ConnectionString()))
-            {
-                var collPosts = db.GetCollection<Post>();
-                Post post = collPosts.FindOne(new { Id = id });
-                return View(post);
-            }
+        {   
+            var collPosts = CurrentMongoSession.GetCollection<Post>();
+            Post post = collPosts.FindOne(new { Id = id });
+            return View(post);
         }
 
         public ActionResult ShowHashed(int year, int month, string hash)
         {
             Post post = null;
-            using (var db = Mongo.Create(ConnectionString()))
-            {
-                var collPosts = db.GetCollection<Post>();
-                var pq = collPosts.Find(new { Hash = hash })
-                    .Where(p => p.Published.Year == year && p.Published.Month == month);
-                if (pq != null)
-                    post = pq.ToList()[0];
-                return View("Show", post);
-            }
+            var collPosts = CurrentMongoSession.GetCollection<Post>();
+            var pq = collPosts.Find(new { Hash = hash })
+                .Where(p => p.Published.Year == year && p.Published.Month == month);
+            if (pq.Count()>0)
+                post = pq.ToList()[0];
+            return View("Show", post);
             //should probably handle null (post not found) here
         }
 
@@ -60,13 +47,10 @@ namespace BlogMongoDB.Controllers
 
         [CustomAuthorize]
         public ActionResult Edit(Guid id)
-        {
-            using (var db = Mongo.Create(ConnectionString()))
-            {
-                var collPosts = db.GetCollection<Post>();
-                Post post = collPosts.FindOne(new { Id = id });
-                return View(post);
-            }
+        {   
+            var collPosts = CurrentMongoSession.GetCollection<Post>();
+            Post post = collPosts.FindOne(new { Id = id });
+            return View(post);
         }
 
         [CustomAuthorize]
@@ -85,11 +69,9 @@ namespace BlogMongoDB.Controllers
 				foreach (string tag in tags)
 					if (tag != null && tag.Length > 0) post.Tags.Add(new Tag { Name = tag });
 
-                using (var db = Mongo.Create(ConnectionString()))
-                {
-                    var collPosts = db.GetCollection<Post>();
-                    collPosts.Insert(post);
-                }
+				var collPosts = CurrentMongoSession.GetCollection<Post>();
+                collPosts.Insert(post);
+
                 return RedirectToAction("Index");
             }
             else
@@ -103,32 +85,29 @@ namespace BlogMongoDB.Controllers
         [HttpPost]
         public ActionResult Edit(Guid id, Post post)
         {   
-            using (var db = Mongo.Create(ConnectionString()))
+            var collPosts = CurrentMongoSession.GetCollection<Post>();
+            Post original = collPosts.FindOne(new { Id = id });
+
+            if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
             {
-                var collPosts = db.GetCollection<Post>();
-                Post original = collPosts.FindOne(new { Id = id });
+                original.Hash = post.Hash;
+                original.Title = post.Title;
+                original.Content = post.Content;
 
-                if (post.Title != null && post.Title.Length > 0 && post.Content != null && post.Content.Length > 0)
-                {
-                    original.Hash = post.Hash;
-                    original.Title = post.Title;
-                    original.Content = post.Content;
+				//update tags
+				string taglist = Request.Form["Tags"];
+				string[] tags = taglist.Split(',');
+				original.Tags.Clear();
+				foreach (string tag in tags)
+					if (tag != null && tag.Length > 0) original.Tags.Add(new Tag { Name = tag });
 
-					//update tags
-					string taglist = Request.Form["Tags"];
-					string[] tags = taglist.Split(',');
-					original.Tags.Clear();
-					foreach (string tag in tags)
-						if (tag != null && tag.Length > 0) original.Tags.Add(new Tag { Name = tag });
-
-                    collPosts.Save(original);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Some fields are invalid.");
-                    return View(post);
-                }
+                collPosts.Save(original);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Some fields are invalid.");
+                return View(post);
             }
         }
 

@@ -10,4 +10,10 @@ namespace BlogMongoDB.Models
     {
 		public virtual string Name { get; set; }
     }
+
+	public class TagReduce
+	{
+		public virtual Tag Id { get; set; }
+		public virtual int Value { get; set; }
+	}
 }
