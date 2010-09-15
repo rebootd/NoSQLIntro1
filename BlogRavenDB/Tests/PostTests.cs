@@ -25,6 +25,24 @@ namespace BlogRavenDB.Tests
         }
 
         [Fact]
+        public void can_fetch_by_tag()
+        {
+            string name = "yours";
+
+            List<Post> posts = new List<Post>();
+            var ps = (from p in DocumentSession.LuceneQuery<Post>("PostsByPublished")
+                      where p.Published <= DateTime.Now
+                      && p.Tags != null
+                      && p.Tags.Any(x => x.Name == name)
+                      select p);
+            if (ps != null)
+                posts = ps.ToList();
+
+            Assert.NotEmpty(posts);
+
+        }
+
+        [Fact]
         public void do_perf_inserts()
         {
             int count = 100000;

@@ -12,20 +12,30 @@ namespace BlogRavenDB.Indexes
     {
         public override IndexDefinition CreateIndexDefinition()
         {
-            return new IndexDefinition<Post, Tag>
+            return new IndexDefinition<Post, TagCount>
             {
                 Map = docs => from doc in docs
                               select new { doc.Tags }
-                              into dc
-                              from tag in dc.Tags
-                              select new { tag.Name },
+                                  into dc
+                                  from tag in dc.Tags
+                                  select new { tag.Name, Count = 1 },
                 Reduce = results => from result in results
                                     group result by result.Name
-                                    into g
-                                    select new { Name = g.Key },
-                Stores = { { x => x.Name, FieldStorage.Yes } } 
+                                        into g
+                                        select new { Name = g.Key, Count = g.Sum(x => x.Count) },
+                Stores =
+            	{
+            		{ x => x.Name, FieldStorage.Yes },
+					{ x => x.Count, FieldStorage.Yes }
+            	}
             }
             .ToIndexDefinition(DocumentStore.Conventions);
+        }
+
+        public class TagCount
+        {
+            public string Name { get; set; }
+            public int Count { get; set; }
         }
     }
 }
