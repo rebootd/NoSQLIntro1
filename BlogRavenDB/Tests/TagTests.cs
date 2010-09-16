@@ -10,6 +10,18 @@ namespace BlogRavenDB.Tests
 {
     public class TagTests : TestBase
     {
+        [Fact]
+        public void can_fetch_by_name_index()
+        {
+            can_fetch_by_index("TagsByName");
+        }
+
+        private void can_fetch_by_index(string index)
+        {
+            var tags = fetch_by_index<Tag>(index);
+            Assert.NotEmpty(tags);
+        }
+
         [Fact]  
         public void can_fetch()
         {

@@ -15,7 +15,6 @@ namespace BlogRavenDB.Tests
     {
         private static readonly string _connectionStringHost = ConfigurationManager.AppSettings["connectionStringHost"];
         private DocumentStore _documentStore;
-		private IDocumentSession _session = null;
 		
 		public TestBase()
         {
@@ -28,9 +27,6 @@ namespace BlogRavenDB.Tests
 
         ~TestBase()
         {
-			if (_session != null && _session.HasChanges)
-				_session.SaveChanges();
-
 			if (_documentStore != null)
 				_documentStore.Dispose();
             _documentStore = null;
@@ -40,10 +36,14 @@ namespace BlogRavenDB.Tests
         {
             get
             {
-				if (_session == null)
-					_session = _documentStore.OpenSession();
-				return _session;
+				return _documentStore.OpenSession();
             }
+        }
+
+        protected List<T> fetch_by_index<T>(string index)
+        {
+            return DocumentSession.LuceneQuery<T>(index)
+                .ToList();
         }
     }
 }
