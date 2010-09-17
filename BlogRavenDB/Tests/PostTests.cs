@@ -60,59 +60,6 @@ namespace BlogRavenDB.Tests
 				.ToList();            
 
             Assert.NotEmpty(posts);
-        }
-
-        [Fact]
-        public void do_perf_inserts()
-        {
-            int count = 1000;
-            DateTime start = DateTime.Now;
-            var s = DocumentSession;
-            for (int loop = 1; loop <= count; loop++)
-            {
-                Post post = new Post
-                {
-                    Content = "test content",
-                    Hash = "perf-test",
-                    Title = "perf test",
-                    Created = DateTime.Now,
-                    Published = DateTime.Now.AddYears(10)
-                };
-                if (post.Tags == null) post.Tags = new List<Tag>();
-                post.Tags.Add(new Tag { Name = "perf" });                
-                s.Store(post);
-
-                if (loop % 30 == 0)
-                {
-                    s.SaveChanges();
-                    s = DocumentSession;
-                }
-            }
-
-            s.SaveChanges();
-
-            TimeSpan span = DateTime.Now - start;
-            System.Diagnostics.Debug.WriteLine("raven insert span: " + span.TotalMilliseconds.ToString());
-            System.Diagnostics.Debug.WriteLine("rows/sec: " + (count / span.TotalSeconds).ToString());
-
-            clean_up_test_data();
-        }
-
-        [Fact]
-        public void clean_up_test_data()
-        {
-            //now clean up added records
-            var s = DocumentSession;
-            var posts = s.LuceneQuery<Post>("PostsByTitle")
-                //.WaitForNonStaleResults(TimeSpan.FromSeconds(5))
-                .Where(x => x.Title == "perf test")
-                .ToList();
-
-            foreach (Post post in posts)
-            {
-                s.Delete<Post>(post);
-            }
-            s.SaveChanges();
-        }
+        }        
     }
 }
