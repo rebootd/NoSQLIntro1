@@ -13,17 +13,16 @@ namespace BlogRavenDB.Indexes
      * docs.Posts 
         .Select(post => new {Title = post.Title, AllText = post}) 
      */
-    //public class PostsTextSearch : AbstractIndexCreationTask
-    //{
-    //    public override IndexDefinition CreateIndexDefinition()
-    //    {
-    //        return new IndexDefinition<Post, Post>
-    //        {
-    //            Map = posts => from post in posts
-    //                           select new { post },
-    //            Indexes = { { x => x., FieldIndexing.NotAnalyzed } }
-    //        }
-    //        .ToIndexDefinition(DocumentStore.Conventions); 
-    //    }
-    //}
+    public class PostsTextSearch : AbstractIndexCreationTask
+    {
+        public override IndexDefinition CreateIndexDefinition() 
+        {
+            return new IndexDefinition<Post>
+            {
+                Map = posts => from post in posts
+                               select new { Title = post.Title, AllText = post }
+            }
+            .ToIndexDefinition(DocumentStore.Conventions); 
+        }   
+    }
 }
