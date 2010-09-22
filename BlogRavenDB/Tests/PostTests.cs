@@ -68,6 +68,21 @@ namespace BlogRavenDB.Tests
             can_fetch_by_index("PostsByPublished");
         }
 
+        [Fact]
+        public void can_fetch_textsearch_index()
+        {
+            can_fetch_by_index("PostsTextSearch");
+        }
+
+        [Fact]
+        public void can_textsearch()
+        {
+            var posts = DocumentSession.LuceneQuery<Post>("PostsTextSearch")
+                .Where("AllText:yours")
+                .ToList();
+            Assert.NotEmpty(posts);
+        }
+
 		private void can_fetch_by_index(string index)
 		{
             var posts = fetch_by_index<Post>(index);
@@ -81,7 +96,7 @@ namespace BlogRavenDB.Tests
 
             var posts = DocumentSession.LuceneQuery<Post>("PostsByTag")
 				.Where(x => x.Published <= DateTime.Now && x.Tags.Any(y => y.Name == name))
-				.ToList();            
+				.ToList();
 
             Assert.NotEmpty(posts);
         }        
