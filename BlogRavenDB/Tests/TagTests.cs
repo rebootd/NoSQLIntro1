@@ -10,6 +10,30 @@ namespace BlogRavenDB.Tests
 {
     public class TagTests : TestBase
     {
+        public Post GetNewPost()
+        {
+            Post post = new Post { Title = "new title", Hash = "new-title", Content = "test content", Published = DateTime.Now, Created = DateTime.Now };
+            post.Tags.Add(new Tag { Name = "yours" });
+            post.Tags.Add(new Tag { Name = "mine" });
+            return post;
+        }
+
+        Post _post = null;
+
+        public TagTests()
+        {
+            //ensure there's at least one post
+            _post = GetNewPost();
+            DocumentSession.Store(_post);
+            DocumentSession.SaveChanges();
+        }
+
+        ~TagTests()
+        {
+            DocumentSession.Delete<Post>(_post);
+            _post = null;
+        }
+
         [Fact]
         public void can_fetch_by_name_index()
         {
@@ -33,7 +57,7 @@ namespace BlogRavenDB.Tests
         public void fecth_unique()
         {
 			var alltags = DocumentSession.LuceneQuery<Tag>("TagsByName").WaitForNonStaleResults().ToList();
-			List<string> tags = (from t in alltags
+			List<string> tags   = (from t in alltags
 								 select t.Name)
 								.ToList();
 
