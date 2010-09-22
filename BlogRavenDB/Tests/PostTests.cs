@@ -76,7 +76,7 @@ namespace BlogRavenDB.Tests
 
         [Fact]
         public void can_textsearch()
-        {
+        {   
             var posts = DocumentSession.LuceneQuery<Post>("PostsTextSearch")
                 .Where("AllText:yours")
                 .ToList();

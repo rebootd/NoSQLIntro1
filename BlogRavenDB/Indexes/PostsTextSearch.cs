@@ -8,6 +8,11 @@ using BlogRavenDB.Models;
 
 namespace BlogRavenDB.Indexes
 {
+    /*
+     * This is the index I'm trying to create
+     * docs.Posts 
+        .Select(post => new {Title = post.Title, AllText = post}) 
+     */
     //public class PostsTextSearch : AbstractIndexCreationTask
     //{
     //    public override IndexDefinition CreateIndexDefinition()
