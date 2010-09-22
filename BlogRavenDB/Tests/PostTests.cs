@@ -10,6 +10,30 @@ namespace BlogRavenDB.Tests
 {
     public class PostTests : TestBase
     {
+        public Post GetNewPost()
+        {
+            Post post = new Post { Title = "new title", Hash = "new-title", Content = "test content", Published = DateTime.Now, Created = DateTime.Now };
+            post.Tags.Add(new Tag { Name = "yours" });
+            post.Tags.Add(new Tag { Name = "mine" });
+            return post;
+        }
+
+        Post _post = null;
+
+        public PostTests()
+        {
+            //ensure there's at least one post
+            _post = GetNewPost();
+            DocumentSession.Store(_post);
+            DocumentSession.SaveChanges();
+        }
+
+        ~PostTests()
+        {
+            DocumentSession.Delete<Post>(_post);
+            _post = null;
+        }
+
         [Fact]
         public void can_fetch()
         {

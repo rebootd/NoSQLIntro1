@@ -15,6 +15,7 @@ namespace BlogRavenDB.Tests
     {
         private static readonly string _connectionStringHost = ConfigurationManager.AppSettings["connectionStringHost"];
         private DocumentStore _documentStore;
+        private IDocumentSession _session = null;
 		
 		public TestBase()
         {
@@ -36,7 +37,8 @@ namespace BlogRavenDB.Tests
         {
             get
             {
-				return _documentStore.OpenSession();
+                if(_session==null) _session = _documentStore.OpenSession();
+				return _session;
             }
         }
 

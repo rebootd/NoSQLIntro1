@@ -17,7 +17,7 @@ namespace BlogRavenDB.Indexes
                 Map = posts => from post in posts
                                select new { post.Title }
             }
-            .ToIndexDefinition(DocumentStore.Conventions);
+            .ToIndexDefinition(DocumentStore.Conventions);            
         }
     }
 }
