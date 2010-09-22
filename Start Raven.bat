@@ -1,1 +1,1 @@
-dependencies\RavenDB\Server\RavenDB.exe
+dependencies\RavenDB\Raven.Server.exe
