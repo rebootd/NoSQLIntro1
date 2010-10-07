@@ -83,6 +83,18 @@ namespace BlogRavenDB.Tests
             Assert.NotEmpty(posts);
         }
 
+        //odd bug affect ravendb causes one of these to fail; i believe the first one.. but make sure at least one passes.
+        //note: the bug is not in ravendb so far as I can tell; its actually WebRequest.Create(..)
+
+        [Fact]
+        public void can_textsearch2()
+        {
+            var posts = DocumentSession.LuceneQuery<Post>("PostsTextSearch")
+                .Where("AllText:ours")
+                .ToList();
+            Assert.NotEmpty(posts);
+        }
+
 		private void can_fetch_by_index(string index)
 		{
             var posts = fetch_by_index<Post>(index);
