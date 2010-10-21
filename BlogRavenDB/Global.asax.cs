@@ -72,8 +72,11 @@ namespace BlogRavenDB
             _documentStore = new DocumentStore { Url = "http://localhost:8080/" };
             _documentStore.Initialize();
 
+            /*
+             * Leaving the above code and index classes in for reference. RavenDB no longer requires explicit indexes
+             */
             //create indexes
-            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(BlogRavenDB.Indexes.PostsByPublished).Assembly, _documentStore);
+            //Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(BlogRavenDB.Indexes.PostsByPublished).Assembly, _documentStore);
 
             AreaRegistration.RegisterAllAreas();
 

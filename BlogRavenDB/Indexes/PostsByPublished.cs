@@ -8,16 +8,16 @@ using BlogRavenDB.Models;
 
 namespace BlogRavenDB.Indexes
 {
-	public class PostsByPublished : AbstractIndexCreationTask
-	{
-        public override IndexDefinition CreateIndexDefinition()
-        {
-            return new IndexDefinition<Post>
-            {
-                Map = posts => from post in posts
-                                select new { post.Published }
-            }
-            .ToIndexDefinition(DocumentStore.Conventions);
-        }
-	}
+    //public class PostsByPublished : AbstractIndexCreationTask
+    //{
+    //    public override IndexDefinition CreateIndexDefinition()
+    //    {
+    //        return new IndexDefinition<Post>
+    //        {
+    //            Map = posts => from post in posts
+    //                            select new { post.Published }
+    //        }
+    //        .ToIndexDefinition(DocumentStore.Conventions);
+    //    }
+    //}
 }

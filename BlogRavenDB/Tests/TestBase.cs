@@ -23,7 +23,10 @@ namespace BlogRavenDB.Tests
             _documentStore.Initialize();
 
             //create indexes
-            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(BlogRavenDB.Indexes.PostsByPublished).Assembly, _documentStore);
+            //Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(BlogRavenDB.Indexes.PostsByPublished).Assembly, _documentStore);
+            /*
+             * Leaving the above code and index classes in for reference. RavenDB no longer requires explicit indexes
+             */
         }
 
         ~TestBase()
