@@ -14,7 +14,7 @@ namespace BlogRavenDB.Controllers
         {
             List<Post> posts = new List<Post>();
             var postsQuery = DocumentSession.LuceneQuery<Post>("PostsByPublished")
-                .Where(p => p.Published <= DateTime.Now);
+                .Where(p => p.Published <= DateTime.Now).Take(5);
 
             if (postsQuery != null)
             {
