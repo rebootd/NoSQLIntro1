@@ -14,7 +14,7 @@ namespace BlogMongoDB.Controllers
         public ActionResult Index()
         {
             var collPosts = CurrentMongoSession.GetCollection<Post>();
-            var col = collPosts.Find(new { Published = Q.LessOrEqual(DateTime.Now) });
+            var col = collPosts.Find(new { Published = Q.LessOrEqual(DateTime.Now) }).Take(5);
             var posts = col.ToList();
 
             return View(posts);
